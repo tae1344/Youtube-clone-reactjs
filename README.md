@@ -1,18 +1,10 @@
-Hello, My Friends  
-Thank you for having interest in this repository ! 
+사용된 라이브러리
 
-To use this application, 
+1. React Dropzone - 비디오 파일 업로드용도
+   속성
 
-1. make dev.js file inside config folder 
-2. put mongoDB info into dev.js file 
-3. Type  " npm install " inside the root directory  ( Download Server Dependencies ) 
-4. Type " npm install " inside the client directory ( Download Front-end Dependencies )
+- onDrop
+- multiple : 한번에 파일을 많이 올릴지 or 하나만 올릴지 설정
+- maxSize : 파일 최대 사이즈 조정
 
-
-If you have problem, feel free to ask me ^^ 
-
-You can watch the tutorial for this app.
-
-https://www.youtube.com/channel/UCFyXA9x8lpL3EYWeYhj4C4Q?view_as=subscriber
-
-
+2. Multer - 노드 서버에 비디오 저장
