@@ -73,6 +73,18 @@ router.get('/getVideos', (req, res) => {
 
 });
 
+router.post('/getVideoDetail', (req, res) => {
+
+  Video.findOne({ "_id": req.body.videoId })
+    .populate('writer') // 다른 정보를 다 가져오게 하려고 populate해줌
+    .exec((err, videoDetail) => {
+      if (err) return res.status(400).send(err)
+      return res.status(200).json({ success: true, videoDetail })
+    })
+
+
+});
+
 
 router.post('/thumbnail', (req, res) => {
 
