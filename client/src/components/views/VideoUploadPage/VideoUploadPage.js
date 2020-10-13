@@ -26,6 +26,9 @@ function VideoUploadPage() {
   const [Description, setDescription] = useState("")
   const [Private, setPrivate] = useState(0)    // Private -> 0, Public -> 1
   const [Category, setCategory] = useState("Film & Animation") // 초기값
+  const [FilePath, setFilePath] = useState("")
+  const [Duration, setDuration] = useState("")
+  const [ThumbnailPath, setThumbnailPath] = useState("")
 
   // 이벤트 설정
   const onTitleChange = (e) => {
@@ -58,6 +61,27 @@ function VideoUploadPage() {
       .then(response => {
         if (response.data.success) {
           console.log(response.data)
+
+          let variable = {
+            url: response.data.url,
+            fileName: response.data.fileName
+          }
+
+          setFilePath(response.data.url)
+
+          Axios.post('/api/video/thumbnail', variable)
+            .then(response => {
+              if (response.data.success) {
+                //console.log(response.data)
+                setDuration(response.data.fileDuration)
+                setThumbnailPath(response.data.url)
+              } else {
+
+                alert('썸네일 생성에 실패했습니다.')
+              }
+            })
+
+
         } else {
           console.log(response.data)
           alert('비디오 업로드를 실패했습니다.')
@@ -90,13 +114,15 @@ function VideoUploadPage() {
             )}
 
           </DropZone>
-
-
-
           {/* Thumbnail */}
-          <div>
-            <img src alt />
-          </div>
+          {/* ThumbnailPath가 있을때만 렌더링 하라는 문법 */}
+          {ThumbnailPath &&
+            <div>
+              <img src={`http://localhost:5000/${ThumbnailPath}`} alt="Thumbnail" />
+            </div>
+
+          }
+
         </div>
         <br />
         <br />
