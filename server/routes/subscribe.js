@@ -4,7 +4,7 @@ const router = express.Router();
 const { Subscriber } = require("../models/Subscriber");
 
 //=================================
-//              Subscribe
+//              Subscribe API
 //=================================
 router.post('/subscribeNumber', (req, res) => {
 
@@ -29,6 +29,29 @@ router.post('/subscribed', (req, res) => {
       }
       res.status(200).json({ success: true, subscribed: result })
     })
+
+});
+
+// 구독 취소
+router.post('/unSubscribe', (req, res) => {
+
+  Subscriber.findOneAndDelete({ userTo: req.body.userTo, userFrom: req.body.userFrom })
+    .exec((err, doc) => {
+      if (err) return res.status(400).json({ success: false, err })
+      res.status(200).json({ success: true, doc })
+    })
+
+});
+
+// 구독
+router.post('/subscribe', (req, res) => {
+
+  const subscribe = new Subscriber(req.body)
+
+  subscribe.save((err, doc) => {
+    if (err) return res.status(400).json({ success: false, err })
+    res.status(200).json({ success: true })
+  })
 
 });
 

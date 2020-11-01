@@ -5,7 +5,7 @@ const { User } = require("../models/User");
 const { auth } = require("../middleware/auth");
 
 //=================================
-//             User
+//             User API
 //=================================
 
 router.get("/auth", auth, (req, res) => {

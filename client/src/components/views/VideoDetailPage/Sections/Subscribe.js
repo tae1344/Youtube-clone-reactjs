@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 function Subscribe(props) {
 
-  const [SubscriberNumber, setSubscriberNumber] = useState(0)
+  const [SubscribeNumber, setSubscribeNumber] = useState(0)
   const [Subscribed, setSubscribed] = useState(false)
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function Subscribe(props) {
     Axios.post('/api/subscribe/subscribeNumber', variable)
       .then(response => {
         if (response.data.success) {
-          setSubscriberNumber(response.data.subscribeNumber)
+          setSubscribeNumber(response.data.subscribeNumber)
         } else {
           alert('구독자 수 정보를 받아오지 못했습니다.')
         }
@@ -37,17 +37,51 @@ function Subscribe(props) {
   }, [])
 
 
+  const onSubscribe = () => {
+
+    let subscribedVariable = {
+      userTo: props.userTo,
+      userFrom: props.userFrom
+    }
+
+    if (Subscribed) {
+      // 이미 구독 중이면
+      Axios.post('/api/subscribe/unSubscribe', subscribedVariable)
+        .then(response => {
+          if (response.data.success) {
+            setSubscribeNumber(SubscribeNumber - 1)
+            setSubscribed(!Subscribed)
+          } else {
+            alert('구독 취소 하는데 실패했습니다.')
+          }
+        })
+
+      // 아직 구동 중이 아닐 경우
+    } else {
+
+      Axios.post('/api/subscribe/subscribe', subscribedVariable)
+        .then(response => {
+          if (response.data.success) {
+            setSubscribeNumber(SubscribeNumber + 1)
+            setSubscribed(!Subscribed)
+          } else {
+            alert('구독 하는데 실패했습니다.')
+          }
+        })
+    }
+  }
+
   return (
     <div>
       <button
         style={{
-          backgroundColor: `${Subscribe ? '#CC0000' : '#AAAAAA'}`, borderRadius: '4px',
+          backgroundColor: `${Subscribed ? '#AAAAAA' : '#CC0000'}`, borderRadius: '4px',
           color: 'white', padding: '10px 16px',
           fontWeight: '500', fontSize: '1rem', textTransform: 'uppercase'
         }}
-        onClick
+        onClick={onSubscribe}
       >
-        {SubscriberNumber} {Subscribed ? 'Subscribed' : 'Subscribe'}
+        {SubscribeNumber} {Subscribed ? 'Subscribed' : 'Subscribe'}
       </button>
     </div>
   )

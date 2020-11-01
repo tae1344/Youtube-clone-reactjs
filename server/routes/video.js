@@ -30,7 +30,7 @@ const upload = multer({ storage: storage }).single("file");
 
 
 //=================================
-//              Video
+//              Video API
 //=================================
 router.post('/uploadfiles', (req, res) => {
 
